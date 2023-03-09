@@ -62,7 +62,7 @@
             &kp N1     &kp N2     &kp N3    &kp N4      &kp N5         &kp N6     &kp N7     &kp N8     &kp N9     &kp N0
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  esc     │  left    │  up      │  right   │  esc     │   │          │  left    │  up      │  right   │          │
-            &kp ESC   &kp LEFT     &kp UP   &kp RIGHT   &none           &none  &kp LA(E)  &kp LA(j)  &kp LA(U)  &none
+            &kp ESC   &kp LEFT     &kp UP   &kp RIGHT   &kp LC(DOWN) &kp LC(UP)  &kp LA(E)  &kp LA(J)  &kp LA(U)  &none
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│   tab    │   TRANS  │   down   │          │          │   │          │          │          │          │          │
          &kp TAB  &kp LG(LC(LEFT)) &kp DOWN &kp LG(LC(RIGHT)) &kp C_VOL_DN &kp C_VOL_UP &none &kp C_PREV &kp C_PP   &kp C_NEXT
