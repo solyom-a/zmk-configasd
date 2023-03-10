@@ -51,10 +51,10 @@
         ACCENTED_KEY(ac_i, I, E)
         ACCENTED_KEY(ac_o, O, E)
         ACCENTED_KEY(ac_u, U, E)
-        ACCENTED_KEY(ac_ods, O, J)
-        ACCENTED_KEY(ac_uds, U, J)
-        ACCENTED_KEY(ac_odl, O, U)
-        ACCENTED_KEY(ac_udl, U, U)
+        ACCENTED_KEY(ac_ods, O, U)
+        ACCENTED_KEY(ac_uds, U, U)
+        ACCENTED_KEY(ac_odl, O, J)
+        ACCENTED_KEY(ac_udl, U, J)
     };
 
     behaviors {
@@ -68,6 +68,16 @@
             global-quick-tap;
             bindings = <&kp>, <&kp>;
         };
+        mod_layer: mod_layer {
+            label = "mod_layer";
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <220>;
+            quick-tap-ms = <150>;
+            global-quick-tap;
+            bindings = <&kp>, <&sl>;
+        };
     };
 
     keymap {
@@ -76,7 +86,7 @@
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│  Q       │  W       │  E       │  R       │  T       │   │  Y       │  U       │  I       │  O       │  P       │
-            &lt 3 Q    &kp W      &kp E      &kp R      &kp T          &kp Y      &kp U      &kp I      &kp O      &lt 3 P
+            &lt 4 Q    &kp W      &kp E      &kp R      &kp T          &kp Y      &kp U      &kp I      &kp O      &lt 4 P
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  A       │  S       │  D       │  F       │  G       │   │  H       │  J       │  K       │  L       │ backspace│
             &kp A      &kp S      &kp D      &kp F      &kp G          &kp H      &kp J      &kp K      &kp L     &kp BSPC
@@ -84,7 +94,7 @@
         //│  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │ , <      │ . >      │ / ?      │
             &kp Z    &ht LCTRL X  &ht LALT C &kp V      &kp B          &kp N      &kp M      &kp COMMA  &kp DOT    &kp DEL
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &kp LGUI   &lt 2 SPACE     &lt 1 ENTER  &kp LSHIFT
+                                    &mod_layer LGUI 3    &lt 2 SPACE   &lt 1 ENTER  &kp LSHIFT
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
@@ -117,6 +127,23 @@
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│   tab    │   TRANS  │   down   │          │          │   │          │          │          │          │          │
          &kp TAB  &kp LG(LC(LEFT)) &kp DOWN &kp LG(LC(RIGHT)) &kp C_VOL_DN &kp C_VOL_UP &none &kp C_PREV &kp C_PP   &kp C_NEXT
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                             &trans     &trans         &trans     &trans
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+            >;
+        };
+
+        accent_layer {
+            bindings = <
+        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &none     &none       &ac_e       &none      &none         &none       &ac_u     &ac_i     &ac_o      &none
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &ac_a       &none       &none     &none     &none         &none        &ac_uds      &none   &ac_ods    &none
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │          │          │          │          │   │          │          │          │          │          │
+             &none       &none       &none    &none      &none        &none      &ac_udl      &none     &ac_odl      &none
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
                                              &trans     &trans         &trans     &trans
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
