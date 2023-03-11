@@ -65,20 +65,56 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <220>;
+            tapping-term-ms = <250>;
             quick-tap-ms = <150>;
             global-quick-tap;
             bindings = <&kp>, <&kp>;
         };
-        mod_layer: mod_layer {
-            label = "mod_layer";
+        hl_hp: hold_layer_hp {
+            label = "hold_layer_hp";
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "hold-preferred";
             tapping-term-ms = <220>;
             quick-tap-ms = <150>;
             global-quick-tap;
-            bindings = <&kp>, <&sl>;
+            bindings = <&kp>, <&slm>;
+        };
+        slm: sticky_layer_mod {
+			compatible = "zmk,behavior-sticky-key";
+			label = "sticky_layer_mod";
+			#binding-cells = <1>;
+			release-after-ms = <1500>;
+			bindings = <&mo>;
+			ignore-modifiers;
+		};
+        lqt: layer_quick_tap {
+            label = "layer_quick_tap";
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <180>;
+            quick-tap-ms = <100>;
+            global-quick-tap;
+            bindings = <&mo>, <&kp>;
+        };
+        skq: sticky_key_quick_release {
+            compatible = "zmk,behavior-sticky-key";
+            label = "STICKY_KEY_QUICK_RELEASE";
+            #binding-cells = <1>;
+            bindings = <&kp>;
+            release-after-ms = <1000>;
+            quick-release;
+        };
+        slt: slow_layer_tap {
+            label = "slow_layer_tap";
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <650>;
+            quick-tap-ms = <600>;
+            global-quick-tap;
+            bindings = <&mo>, <&kp>;
         };
     };
 
@@ -88,15 +124,15 @@
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│  Q       │  W       │  E       │  R       │  T       │   │  Y       │  U       │  I       │  O       │  P       │
-            &lt 4 Q    &kp W      &kp E      &kp R      &kp T          &kp Y      &kp U      &kp I      &kp O      &lt 4 P
+            &slt 4 Q    &kp W      &kp E      &kp R      &kp T          &kp Y      &kp U      &kp I      &kp O     &slt 4 P
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  A       │  S       │  D       │  F       │  G       │   │  H       │  J       │  K       │  L       │ backspace│
             &kp A      &kp S      &kp D      &kp F      &kp G          &kp H      &kp J      &kp K      &kp L     &kp BSPC
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │ , <      │ . >      │ / ?      │
-            &kp Z    &ht LCTRL X  &ht LALT C &kp V      &kp B          &kp N      &kp M      &kp COMMA  &kp DOT    &kp DEL
+            &kp Z    &ht LCTRL X  &ht LALT C &kp V      &kp B          &kp N   &ht LGUI M &ht LALT COMMA &ht LCTRL DOT &kp DEL
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                    &mod_layer LGUI 3    &lt 2 SPACE   &lt 1 ENTER  &kp LSHIFT
+                                          &hl_hp LGUI 3  &lqt 2 SPACE  &lqt 1 ENTER  &kp LSHIFT
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
@@ -124,11 +160,11 @@
         //│    1     │  2       │  3       │  4       │  5       │   │  6       │  7       │  8       │  9       │  0       │
             &kp N1     &kp N2     &kp N3    &kp N4      &kp N5         &kp N6     &kp N7     &kp N8     &kp N9     &kp N0
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  esc     │  left    │  up      │  right   │  esc     │   │          │  left    │  up      │  right   │          │
-            &kp ESC   &kp LEFT     &kp UP   &kp RIGHT   &kp LC(DOWN) &kp LC(UP)  &kp LA(E)  &kp LA(J)  &kp LA(U)  &none
+        //│  esc     │  left    │  up      │  right   │  esc     │   │          │          │          │          │          │
+            &kp ESC   &kp LEFT     &kp UP   &kp RIGHT   &kp LC(DOWN) &kp LC(UP)     &none     &none     &none     &none
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│   tab    │   TRANS  │   down   │          │          │   │          │          │          │          │          │
-         &kp TAB  &kp LG(LC(LEFT)) &kp DOWN &kp LG(LC(RIGHT)) &kp C_VOL_DN &kp C_VOL_UP &none &kp C_PREV &kp C_PP   &kp C_NEXT
+        //│   tab    │   TRANS  │   down   │          │          │   │          │    GUI   │   ALT    │   CTRL   │          │
+         &kp TAB &kp LG(LC(LEFT)) &kp DOWN &kp LG(LC(RIGHT)) &kp C_VOL_DN &kp C_VOL_UP &kp LGUI &kp LALT &kp LCTRL &kp C_NEXT
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
                                              &trans     &trans         &trans     &trans
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
@@ -139,13 +175,13 @@
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│          │          │          │          │          │   │          │          │          │          │          │
-            &none     &none       &ac_e       &none      &none         &none       &ac_u     &ac_i     &ac_o      &none
+            &none     &none       &ac_e       &none      &none         &none       &ac_u     &ac_i     &ac_o       &none
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│          │          │          │          │          │   │          │          │          │          │          │
             &ac_a       &none       &none     &none     &none         &none        &ac_uds      &none   &ac_ods    &none
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│          │          │          │          │          │   │          │          │          │          │          │
-             &none       &none       &none    &none      &none        &none      &ac_udl      &none     &ac_odl      &none
+             &none       &none       &none    &none      &none        &none       &ac_udl     &none     &ac_odl     &none
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
                                              &trans     &trans         &trans     &trans
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
