@@ -8,6 +8,15 @@
 #include <dt-bindings/zmk/outputs.h>
 
 / {
+    #define SHIFT_MORPH(NAME, KEY, MOD_KEY) \
+        NAME: NAME { \
+          compatible = "zmk,behavior-mod-morph"; \
+          label = ZMK_MACRO_STRINGIFY(NAME); \
+          #binding-cells = <0>; \
+          bindings = <&kp KEY>, <&kp MOD_KEY>; \
+          mods = <(MOD_LSFT|MOD_RSFT)>; \
+      }; \
+
     #define ACCENTED_KEY(NAME, KEY, DEAD_KEY) \
         NAME##_l: NAME##_l { \
             label = ZMK_MACRO_STRINGIFY(NAME##_l); \
@@ -59,6 +68,17 @@
         ACCENTED_KEY(ac_udl, U, J)
     };
 
+    shiftmorphs {
+        SHIFT_MORPH(sm_bcsp, BSPC, DEL)
+        SHIFT_MORPH(sm_enter, ENTER, TAB)
+        SHIFT_MORPH(sm_quote, DQT, SQT)
+        SHIFT_MORPH(sm_par, LPAR, RPAR)
+        SHIFT_MORPH(sm_bracket, LBKT, RBKT)
+        SHIFT_MORPH(sm_curly, LBRC, RBRC)
+        SHIFT_MORPH(sm_colon, COLON, SEMI)
+        SHIFT_MORPH(sm_slash, SLASH, BSLH)
+    };
+
     behaviors {
         ht: hold_tap {
             label = "hold_tap";
@@ -66,18 +86,16 @@
             #binding-cells = <2>;
             flavor = "tap-preferred";
             tapping-term-ms = <250>;
-            quick-tap-ms = <150>;
+            quick-tap-ms = <200>;
             global-quick-tap;
             bindings = <&kp>, <&kp>;
         };
-        hl_hp: hold_layer_hp {
-            label = "hold_layer_hp";
+        slm_lt: sticky_layer_tap {
+            label = "sticky_layer_tap";
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "hold-preferred";
-            tapping-term-ms = <220>;
-            quick-tap-ms = <150>;
-            global-quick-tap;
+            tapping-term-ms = <200>;
             bindings = <&kp>, <&slm>;
         };
         slm: sticky_layer_mod {
@@ -94,7 +112,7 @@
             #binding-cells = <2>;
             flavor = "balanced";
             tapping-term-ms = <180>;
-            quick-tap-ms = <100>;
+            quick-tap-ms = <120>;
             global-quick-tap;
             bindings = <&mo>, <&kp>;
         };
@@ -116,6 +134,14 @@
             global-quick-tap;
             bindings = <&mo>, <&kp>;
         };
+        lt_hp: layer_tap_hp {
+            label = "layer_tap_hp";
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&kp>;
+        };
     };
 
     keymap {
@@ -126,13 +152,13 @@
         //│  Q       │  W       │  E       │  R       │  T       │   │  Y       │  U       │  I       │  O       │  P       │
             &slt 4 Q    &kp W      &kp E      &kp R      &kp T          &kp Y      &kp U      &kp I      &kp O     &slt 4 P
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  A       │  S       │  D       │  F       │  G       │   │  H       │  J       │  K       │  L       │ backspace│
-            &kp A      &kp S      &kp D      &kp F      &kp G          &kp H      &kp J      &kp K      &kp L     &kp BSPC
+        //│  A       │  S       │  D       │  F       │  G       │   │  H       │  J       │  K       │  L       │ bspc del │
+            &lqt 2 A   &kp S      &kp D      &kp F      &kp G          &kp H      &kp J      &kp K      &kp L     &sm_bcsp
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │ , <      │ . >      │ / ?      │
-            &kp Z    &ht LCTRL X  &ht LALT C &kp V      &kp B          &kp N   &ht LGUI M &ht LALT COMMA &ht LCTRL DOT &kp DEL
+        //│  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │ , <      │ . >      │ ?        │
+            &kp Z    &ht LCTRL X  &ht LALT C &kp V      &kp B         &kp N   &ht LGUI M &ht LALT COMMA &ht LCTRL DOT &kp QMARK
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                          &hl_hp LGUI 3  &lqt 2 SPACE  &lqt 1 ENTER  &kp LSHIFT
+                                   &slm_lt LSHIFT 3 &ht LGUI SPACE   &sm_enter   &lt_hp 1 ESC
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
@@ -140,31 +166,31 @@
         symbol_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ !        │  &       │  #       │ +        │    _     │   │ '        │ ?        │ |        │  /       │  \       │
-            &kp EXCL   &kp AMPS   &kp HASH   &kp PLUS  &kp UNDER        &kp SQT   &kp QMARK  &kp PIPE  &kp SLASH    &kp BSLH
+        //│    1     │  2       │  3       │  4       │  5       │   │  6       │  7       │  8       │  9       │  0       │
+            &kp N1     &kp N2     &kp N3    &kp N4      &kp N5         &kp N6     &kp N7     &kp N8     &kp N9     &kp N0
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ ~        │  @       │  *       │  =       │  -       │   │ "        │  (       │  [       │ {        │  :       │
-            &kp TILDE2 &kp AT     &kp STAR   &kp EQUAL  &kp MINUS     &kp DQT   &kp LPAR   &kp LBKT   &kp LBRC   &kp COLON
+        //│ !        │  @       │  *       │  =       │  -       │   │ " '      │  ( )     │  [ ]     │ { }      │    : ;   │
+            &kp EXCL   &kp AT   &kp STAR   &kp EQUAL  &kp MINUS       &sm_quote   &sm_par  &sm_bracket  &sm_curly  &sm_colon
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ $        │  %       │  ^       │          │          │   │          │  )       │  ]       │  }       │  ;       │
-           &kp DLLR    &kp PRCNT  &kp CARET  &none      &none          &none     &kp RPAR    &kp RBKT   &kp RBRC    &kp SEMI
+        //│ ~        │  &       │  #       │ +        │    _     │   │     %    │     $    │      ^   │   |      │     / \  │
+           &kp TILDE2   &kp AMPS   &kp HASH   &kp PLUS  &kp UNDER      &kp PRCNT   &kp DLLR  &kp CARET   &kp PIPE   &sm_slash
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
                                              &trans     &trans         &trans     &trans
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
 
-        number_nav_layer {
+        nav_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│    1     │  2       │  3       │  4       │  5       │   │  6       │  7       │  8       │  9       │  0       │
-            &kp N1     &kp N2     &kp N3    &kp N4      &kp N5         &kp N6     &kp N7     &kp N8     &kp N9     &kp N0
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &none       &none     &kp UP    &none       &none          &none       &none       &none    &none      &none
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  esc     │  left    │  up      │  right   │  esc     │   │          │          │          │          │          │
-            &kp ESC   &kp LEFT     &kp UP   &kp RIGHT   &kp LC(DOWN) &kp LC(UP)     &none     &none     &none     &none
+        //│  esc     │  left    │  down    │  right   │          │   │          │          │          │          │          │
+            &kp ESC   &kp LEFT   &kp DOWN   &kp RIGHT &kp LC(DOWN)    &kp LC(UP)    &none       &none     &none       &none
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│   tab    │   TRANS  │   down   │          │          │   │          │    GUI   │   ALT    │   CTRL   │          │
-         &kp TAB &kp LG(LC(LEFT)) &kp DOWN &kp LG(LC(RIGHT)) &kp C_VOL_DN &kp C_VOL_UP &kp LGUI &kp LALT &kp LCTRL &kp C_NEXT
+        //│   tab    │          │          │          │          │   │          │    GUI   │   ALT    │   CTRL   │          │
+        &kp TAB &kp LG(LC(LEFT)) &kp LC(LA(LS(ENTER))) &kp LG(LC(RIGHT)) &kp C_VOL_DN &kp C_VOL_UP &kp LGUI &kp LALT &kp LCTRL &kp C_NEXT
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
                                              &trans     &trans         &trans     &trans
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
