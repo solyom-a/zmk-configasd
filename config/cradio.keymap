@@ -182,8 +182,8 @@
         //│ !        │  @       │  *       │  =       │  -       │   │ " '      │  ( )     │  [ ]     │ { }      │    : ;   │
             &kp EXCL   &kp AT   &kp STAR   &kp EQUAL  &kp MINUS       &sm_quote   &sm_par  &sm_bracket  &sm_curly  &sm_colon
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ ~        │  &       │  #       │ +        │    _     │   │     %    │     $    │      ^   │   |      │     \  │
-           &kp TILDE2   &kp AMPS   &kp HASH   &kp PLUS  &kp UNDER      &kp PRCNT   &kp DLLR  &kp CARET   &kp PIPE   &kp BACKSLASH
+        //│ `        │  &       │  #       │ +        │    _     │   │     %    │     $    │      ^   │   |      │     \  │
+           &kp GRAVE   &kp AMPS   &kp HASH   &kp PLUS  &kp UNDER      &kp PRCNT   &kp DLLR  &kp CARET   &kp PIPE   &kp BACKSLASH
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
                                              &trans     &trans         &trans     &trans
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
