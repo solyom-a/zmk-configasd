@@ -56,6 +56,17 @@
             keep-mods = <(MOD_LSFT|MOD_RSFT)>; \
         };
 
+    shiftmorphs {
+        SHIFT_MORPH(sm_bcsp, BSPC, DEL)
+        SHIFT_MORPH(sm_enter, ENTER, ESC)
+        SHIFT_MORPH(sm_quote, DQT, SQT)
+        SHIFT_MORPH(sm_par, LPAR, RPAR)
+        SHIFT_MORPH(sm_bracket, LBKT, RBKT)
+        SHIFT_MORPH(sm_curly, LBRC, RBRC)
+        SHIFT_MORPH(sm_colon, COLON, SEMI)
+        SHIFT_MORPH(sm_slash, SLASH, BSLH)
+    };
+
     accents {
         ACCENTED_KEY(ac_e, E, E)
         ACCENTED_KEY(ac_a, A, E)
@@ -66,17 +77,6 @@
         ACCENTED_KEY(ac_uds, U, U)
         ACCENTED_KEY(ac_odl, O, J)
         ACCENTED_KEY(ac_udl, U, J)
-    };
-
-    shiftmorphs {
-        SHIFT_MORPH(sm_bcsp, BSPC, DEL)
-        SHIFT_MORPH(sm_enter, ENTER, ESC)
-        SHIFT_MORPH(sm_quote, DQT, SQT)
-        SHIFT_MORPH(sm_par, LPAR, RPAR)
-        SHIFT_MORPH(sm_bracket, LBKT, RBKT)
-        SHIFT_MORPH(sm_curly, LBRC, RBRC)
-        SHIFT_MORPH(sm_colon, COLON, SEMI)
-        SHIFT_MORPH(sm_slash, SLASH, BSLH)
     };
 
     behaviors {
