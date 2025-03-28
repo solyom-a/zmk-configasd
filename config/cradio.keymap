@@ -58,7 +58,7 @@
 
     shiftmorphs {
         SHIFT_MORPH(sm_bcsp, BSPC, DEL)
-        SHIFT_MORPH(sm_enter, ENTER, ESC)
+        SHIFT_MORPH(sm_esc, ESC, TAB)
         SHIFT_MORPH(sm_quote, DQT, SQT)
         SHIFT_MORPH(sm_par, LPAR, RPAR)
         SHIFT_MORPH(sm_bracket, LBKT, RBKT)
@@ -147,10 +147,10 @@
         lt_hp: layer_tap_hp {
             label = "layer_tap_hp";
             compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
+            #binding-cells = <1>;
             flavor = "hold-preferred";
             tapping-term-ms = <200>;
-            bindings = <&mo>, <&kp>;
+            bindings = <&mo>, <&sm_esc>;
         };
     };
 
@@ -168,7 +168,7 @@
         //│  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │ , <      │ . >      │ /?       │
             &kp Z    &ht LCTRL X  &ht LALT C &kp V      &kp B         &kp N   &ht LGUI M &ht LALT COMMA &ht LCTRL DOT &kp SLASH
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                   &slm_lt LSHIFT 3 &ht_b LGUI SPACE   &sm_enter   &lt_hp 1 TAB
+                                   &slm_lt LSHIFT 3 &ht_b LGUI SPACE   &kp ENTER   &lt_hp 1
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
